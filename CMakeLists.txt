@@ -38,7 +38,7 @@ if(DEFINED MELO_FUNCTION_PRINTS)
   add_definitions(-DMELO_FUNCTION_PRINTS)
 endif()
 
-add_definitions(-std=c++11 -fPIC -Wall -Werror)
+add_definitions(-std=c++11 -fPIC -Wall)
 
 include_directories(
   include
@@ -61,3 +61,25 @@ install(TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+##########
+## Test ##
+##########
+if(CATKIN_ENABLE_TESTING)
+  catkin_add_gtest(test_${PROJECT_NAME}
+    test/EmptyTests.cpp
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test
+  )
+
+  if(TARGET test_${PROJECT_NAME})
+    target_link_libraries( test_${PROJECT_NAME}
+      ${PROJECT_NAME}
+      ${catkin_LIBRARIES}
+      gtest_main
+    )
+    find_package(cmake_code_coverage QUIET)
+    if(cmake_code_coverage_FOUND)
+      add_gtest_coverage()
+    endif(cmake_code_coverage_FOUND)
+  endif()
+endif()
