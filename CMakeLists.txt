@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.5)
 project(message_logger)
 
 # Find Catkin
-find_package(catkin REQUIRED)
+find_package(catkin_simple REQUIRED)
+catkin_simple()
 
 include(CMakeDependentOption)
 cmake_dependent_option(MELO_USE_COUT "Use std::cout" OFF
@@ -41,28 +42,15 @@ endif()
 
 add_definitions(-std=c++14 -fPIC -Wall)
 
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-  ${rclcpp_INCLUDE_DIRS}
-)
-
-add_library(${PROJECT_NAME} SHARED
+cs_add_library(${PROJECT_NAME}
+  src/log/globals.cpp
   src/time/Time.cpp
   src/time/TimeStd.cpp
 )
+target_link_libraries(${PROJECT_NAME} ${rclcpp_LIBRARIES})
 
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${rclcpp_LIBRARIES})
-
-install(DIRECTORY include/${PROJECT_NAME}/ ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_INCLUDE_DESTINATION}/ ${rclcpp_INCLUDE_DIRS}
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  PATTERN "*.in" EXCLUDE
-)
-install(TARGETS ${PROJECT_NAME} 
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+cs_install()
+cs_export()
 
 ##########
 ## Test ##
