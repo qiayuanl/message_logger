@@ -13,9 +13,9 @@ cmake_dependent_option(MELO_USE_COUT "Use std::cout" OFF
 unset(CATKIN_INSTALL_INTO_PREFIX_ROOT)
 
 if(NOT MELO_USE_COUT)
-  message(WARNING "Building message_logger using ros.")
+  message(STATUS "Building message_logger using ros.")
 else()
-  message(WARNING "Building message_logger using std::cout.")
+  message(STATUS "Building message_logger using std::cout.")
 endif()
 
 configure_file(
