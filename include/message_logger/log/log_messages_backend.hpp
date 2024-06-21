@@ -45,8 +45,6 @@
 
 #include "message_logger/log/log_messages_backend_config.hpp"
 
-// todo: replace with std as soon as gcc 4.9.x is standard in ubuntu repo
-#include <boost/regex.hpp>
 
 namespace message_logger {
 namespace log {
